@@ -109,10 +109,10 @@ class Docente extends BaseController
             $hora = $this->request->getPost('Hora');
             $area = $this->request->getPost('Area');
 
-            $result3 = $db->query('CALL spVerificar('.$matricula.',"'.$fecha.'","'.$hora.'")');
+            $result3 = $db->query('CALL spVerificar("'.$fecha.'","'.$hora.'")');
 
             if($result3->getNumRows() > 0){
-                return view('docente/cita', ['validation'=>$this->validator, 'info'=>$result, 'alumnos'=>$result2, 'mensaje'=>"El alumno ya esta registrado en esa fecha y hora, elija otra."]);
+                return view('docente/cita', ['validation'=>$this->validator, 'info'=>$result, 'alumnos'=>$result2, 'mensaje'=>"Ya existe una cita en esa fecha y hora, elija otra."]);
             }else{
                 $query = "CALL spAddCita(".$matricula.",".$docente['intMatricula']." , '".$fecha."',".$area.", '".$hora."');";
                 $db->query($query);
