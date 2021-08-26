@@ -35,15 +35,18 @@ include_once(ROOTPATH.'public\imagenes\translate.php');
                 <a class="nav-link" aria-current="page" href="<?= base_url('docente/historial') ?>">Historial</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Cerrar Sesión</a>
+                <a class="nav-link" href="<?= base_url('LoginController/salir') ?>">Cerrar Sesión</a>
             </li>
         </ul>
         </div>
     </div>
     </nav>
     <div class="container-fluid px-4">
-        <div class="row text-center p-3">
+        <div class="row text-center p-1">
             <h2>Citas pendientes</h2>
+        </div>
+        <div class="row text-center p-1">
+            <h5>Docente: <?= $Nombre ?></h5>
         </div>
         <div class="row">
             <div class="col"><a class="btn btn-primary" href="<?= site_url('docente/cita') ?>" role="button">Añadir cita</a></div>
@@ -63,6 +66,7 @@ include_once(ROOTPATH.'public\imagenes\translate.php');
         <div class="row" style="margin-top:5px">
         <center>
             <div class="col-mx-auto">
+            <?php if($info != null){ ?>
             <table class="table table-success table-striped table-bordered">
                 <thead>
                     <tr>
@@ -118,6 +122,9 @@ include_once(ROOTPATH.'public\imagenes\translate.php');
                     </li>
                 </ul>
             </nav>
+            <?php }else{ ?>
+                <p>Aún no tiene citas pendientes</p>
+            <?php } ?>
             </div>
         </center>
         </div>

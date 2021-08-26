@@ -9,13 +9,15 @@ class Alumno extends BaseController
     {
 
         $db = \Config\Database::connect();
+        $usuario = session()->get('InfoUser');
+        $alumno = $usuario['Usuario'];
 
-        $result=$db->query('CALL spGetCitaAlumno(20171343);')->getResult();
-        //print_r($result);
+        $result=$db->query('CALL spGetCitaAlumno('.$alumno['intMatricula'].');')->getResult();
 
         $datos = [
             'title'=>'Datos de la cita',
-            'info'=>$result
+            'info'=>$result,
+            'Alumno'=>$alumno
         ];
         //print_r($datos);
 

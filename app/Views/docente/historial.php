@@ -29,7 +29,7 @@ include_once(ROOTPATH.'public\imagenes\translate.php');
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="<?= base_url('docente/') ?>">Home</a>
+                <a class="nav-link" aria-current="page" href="<?= base_url('Docente/') ?>">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="<?= base_url('docente/historial') ?>">Historial</a>
@@ -54,6 +54,7 @@ include_once(ROOTPATH.'public\imagenes\translate.php');
         <div class="row" style="margin-top:5px">
         <center>
             <div class="col-mx-auto">
+            <?php if($info != null){ ?>
             <table class="table table-success table-striped table-bordered">
                 <thead>
                     <tr>
@@ -104,6 +105,9 @@ include_once(ROOTPATH.'public\imagenes\translate.php');
                     </li>
                 </ul>
             </nav>
+            <?php }else{ ?>
+                <p>Aún no tiene citas en estado <?= $estado ?></p>
+            <?php } ?>
             </div>
         </center>
         </div>

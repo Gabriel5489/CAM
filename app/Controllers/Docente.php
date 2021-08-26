@@ -13,7 +13,9 @@ class Docente extends BaseController
 	public function index()
 	{
         $db = \Config\Database::connect();
-        $paginacion = $db->query('SELECT * FROM view_citas_docente WHERE idDocente=1234567890 AND Estado_Cita="Pendiente"');
+        $usuario = session()->get('InfoUser');
+        $docente  =$usuario['Usuario'];
+        $paginacion = $db->query('SELECT * FROM view_citas_docente WHERE idDocente='.$docente['intMatricula'].' AND Estado_Cita="Pendiente"');
 
         $filas= $paginacion->getNumRows();
         $paginas = ceil($filas/5);
@@ -21,17 +23,18 @@ class Docente extends BaseController
         if(isset($_GET['page'])){
             $page = $_GET['page'] * 5;
         }
+        $usuario = session()->get('InfoUser');
+        $docente = $usuario['Usuario'];
+        $result=$db->query('CALL spGetCitaDocente('.$docente['intMatricula'].','.$page.');');
 
-        $result=$db->query('CALL spGetCitaDocente(1234567890,'.$page.');');
 
         $datos = [
             'title'=>'Datos de la cita',
             'info'=>$result->getResult(),
             'paginas'=>$paginas,
-            'paginaActual'=>$page
+            'paginaActual'=>$page,
+            'Nombre'=>$docente['vchNombre']." ".$docente['vchAPaterno']." ".$docente['vchAMaterno']
         ];
-        //print_r($datos);
-
 		return view('docente/index', $datos);
 	}
 
@@ -51,6 +54,8 @@ class Docente extends BaseController
     }
 
     public function addCita(){
+        $usuario = session()->get('InfoUser');
+        $docente = $usuario['Usuario'];
         $validation= $this->validate([
             'Matricula'=>[
                 'rules'=>'required|integer|min_length[8]|max_length[8]|is_not_unique[tblalum_docen.intMatricula]',
@@ -109,7 +114,7 @@ class Docente extends BaseController
             if($result3->getNumRows() > 0){
                 return view('docente/cita', ['validation'=>$this->validator, 'info'=>$result, 'alumnos'=>$result2, 'mensaje'=>"El alumno ya esta registrado en esa fecha y hora, elija otra."]);
             }else{
-                $query = "CALL spAddCita(".$matricula.", 1234567890, '".$fecha."',".$area.", '".$hora."');";
+                $query = "CALL spAddCita(".$matricula.",".$docente['intMatricula']." , '".$fecha."',".$area.", '".$hora."');";
                 $db->query($query);
                 return redirect()->to('docente/')->with('success', 'Cita añadida');
             }
@@ -181,8 +186,10 @@ class Docente extends BaseController
     }
 
     public function historial(){
+        $usuario = session()->get('InfoUser');
+        $docente  =$usuario['Usuario'];
         $db = \Config\Database::connect();
-        $paginacion = $db->query('SELECT * FROM view_citas_docente WHERE idDocente=1234567890');
+        $paginacion = $db->query('SELECT * FROM view_citas_docente WHERE idDocente='.$docente['intMatricula'].';');
 
         $filas= $paginacion->getNumRows();
         $paginas = ceil($filas/5);
@@ -196,7 +203,7 @@ class Docente extends BaseController
             $estado = $_GET['estado'];
         }
 
-        $result=$db->query('CALL spGetHistorial(1234567890,"'.$estado.'", '.$page.');');
+        $result=$db->query('CALL spGetHistorial('.$docente['intMatricula'].',"'.$estado.'", '.$page.');');
 
         $datos = [
             'title'=>'Datos de la cita',

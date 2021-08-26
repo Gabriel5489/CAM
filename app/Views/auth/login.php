@@ -26,10 +26,10 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="<?php echo base_url('auth')?>">Registrarse</a>
+            <a class="nav-link" href="<?php echo base_url('auth')?>">Registrarse</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="<?php echo base_url('login')?>">Iniciar Sesión</a>
+            <a class="nav-link active" aria-current="page" href="<?php echo base_url('login')?>">Iniciar Sesión</a>
             </li>
         </ul>
         </div>

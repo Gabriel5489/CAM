@@ -116,7 +116,7 @@ class Auth extends BaseController
             if(!$result){
                 return redirect()->back()->with('fail', 'Algo salio mal');
             }else{
-                return redirect()->to('auth/register')->with('success', 'Te has registrado correctamente');
+                return redirect()->to('login')->with('success', 'Te has registrado correctamente');
             }
         }
     }

@@ -19,6 +19,7 @@ class LoginController extends BaseController{
         $session = session();
 
         $session ->destroy();
+        session()->setFlashdata('success', 'Has cerrado sesión');
         return redirect()->to(base_url('LoginController'));
 
         
@@ -50,30 +51,37 @@ class LoginController extends BaseController{
 
         }else{
             
-        $usuario = $this->request->getPost('Usuario');
-        $contr = $this->request->getPost('Contraseña');
+            $usuario = $this->request->getPost('Usuario');
+            $contr = $this->request->getPost('Contraseña');
 
-        $model = new \App\Models\LoginModel();
-        $user_info =$model->where('vchUsuario', $usuario)->first();
-        $check_password = Hash::check($contr, $user_info['vchContraseña']);
+            $model = new \App\Models\LoginModel();
+            $user_info =$model->where('vchUsuario', $usuario)->first();
+            $check_password = Hash::check($contr, $user_info['vchContraseña']);
 
-        if(!$check_password){
-            session()->setFlashdata('fail', 'Contraseña incorrecta');
-            return redirect()->to('LoginController')->withInput();
+            if(!$check_password){
+                session()->setFlashdata('fail', 'Contraseña incorrecta');
+                return redirect()->to('LoginController')->withInput();
 
-        }else{
-            $user_tipo = $user_info['idTipo'];
-            if($user_tipo == 1){
-                return redirect()->to('admin');
-            }
-            if($user_tipo == 2){
-                return redirect()->to('docente');
-            }
-            if($user_tipo == 3){
-                return redirect()->to('alumno');
-            }
+            }else{
+                $user_tipo = $user_info['idTipo'];
+                $modelUser = new \App\Models\UserModel();
+                $docente =$modelUser->where('idUsuario', $user_info['idUsuario'])->first();
+                $data = [
+                    'tipo'=>$user_tipo,
+                    'Usuario'=>$docente
+                ];
+                session()->set('InfoUser', $data);
+                if($user_tipo == 1){
+                    return redirect()->to('admin');
+                }
+                if($user_tipo == 2){
+                    return redirect()->to('Docente');
+                }
+                if($user_tipo == 3){
+                    return redirect()->to('Alumno');
+                }
 
-            }
+                }
             
         }
 

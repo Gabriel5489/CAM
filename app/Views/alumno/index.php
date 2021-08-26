@@ -28,10 +28,10 @@ include_once(ROOTPATH.'public\imagenes\translate.php');
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="<?= base_url('alumno/') ?>">Home</a>
+            <a class="nav-link active" aria-current="page" href="<?= base_url('Alumno/') ?>">Home</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">Cerrar Sesión</a>
+            <a class="nav-link" href="<?= base_url('LoginController/salir') ?>">Cerrar Sesión</a>
             </li>
         </ul>
         </div>
@@ -41,10 +41,14 @@ include_once(ROOTPATH.'public\imagenes\translate.php');
         <div class="row text-center p-3">
             <h2>Citas pendientes</h2>
         </div>
+        <div class="row text-center p-1">
+            <h5>Alumno: <?= $Alumno['vchNombre']." ".$Alumno['vchAPaterno']." ".$Alumno['vchAMaterno'] ?></h5>
+        </div>
         
         <div class="row" style="margin-top:5px">
         <center>
             <div class="col-mx-auto">
+            <?php if($info != null){ ?>
             <table class="table table-success table-striped table-bordered">
                 <thead>
                     <tr>
@@ -74,6 +78,9 @@ include_once(ROOTPATH.'public\imagenes\translate.php');
                     <?php } ?>
                 </tbody>
             </table>
+            <?php }else{ ?>
+                <p>Aún no tiene citas pendientes</p>
+            <?php } ?>
             </div>
         </center>
         </div>
